@@ -1,11 +1,7 @@
-//@ts-nocheck
 import { Type } from "@sinclair/typebox";
-
 
 export const defineSchema = (schema) => schema;
 
-
-// export const useControllerDefinition = <S extends Omit<BaseSchema, "response">, D extends TSchema>(definition :Omit<BaseController<S, D>, "handler">) => <S1 extends BaseSchema, D1>(options :PredefinedController<S1, S, D & D1>) :typeof definition & typeof options =>  {
 export const useControllerDefinition = (definition) => (options) =>  {
     
     const merge = (one, two) => {
@@ -41,7 +37,6 @@ export const useControllerDefinition = (definition) => (options) =>  {
     const preHandlers = [...definition.preHandler || [], ...options.preHandler || []]
 
     return {
-        // data,
         schema,
         preHandler: preHandlers.length > 0 ? preHandlers : undefined,
         handler: options.handler
