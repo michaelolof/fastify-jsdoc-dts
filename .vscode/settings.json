@@ -1,0 +1,26 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    "eslint.validate": [
+        "javascript",
+        "typescript",
+        "html",
+        "vue",
+    ],
+    "eslint.format.enable": true,
+    "eslint.probe": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "html",
+        "vue",
+        "markdown",
+        "scss",
+    ],
+    "editor.tabSize": 4,
+    "files.exclude": {
+        ".nuxt": true
+    }
+}
