@@ -1,4 +1,3 @@
-import { Schema } from "mongoose";
 import { Type } from "@sinclair/typebox";
 
 const actionUrlSchema = Type.Object({

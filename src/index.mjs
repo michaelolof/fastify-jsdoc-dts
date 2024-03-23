@@ -43,7 +43,7 @@ const startServer = async () => {
     })
 
     await server.ready()
-    // await setupDBConnection();
+    await setupDBConnection();
     await server.listen({ host: "0.0.0.0", port })
 }
 

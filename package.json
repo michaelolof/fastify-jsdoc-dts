@@ -2,9 +2,11 @@
   "name": "jsdoc-mongo",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typecheck": "./node_modules/.bin/tsc --noEmit",
+    "dev": "npm run typecheck && node src/index.mjs"
   },
   "author": "",
   "license": "ISC",
