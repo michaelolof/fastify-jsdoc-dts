@@ -5,7 +5,7 @@ import { UserSchema } from "../../utils/models/users.mjs";
 
 export const getProfileInfoController = defineUserController({
 
-    data: Type.Object({
+    locals: Type.Object({
         message: Type.String()
     }),
 
@@ -27,7 +27,7 @@ export const getProfileInfoController = defineUserController({
         // Access to type safe access token
         const token = req.headers["x-user-access-token"]
 
-        const user = req.data.user;
+        const user = req.locals.user;
 
         return res.send({
             status: "success",

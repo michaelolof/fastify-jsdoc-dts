@@ -17,7 +17,7 @@ export type DefinedSchema<Q, B, P, H> = {
     response?: Record<number | string, TSchema>
 }
 
-export function defineSchema<S = BaseSchema>(schema :S) : S;
+export function defineSchema<S extends BaseSchema>(schema :S) : S;
 
 type FastifyRequestSchemaPayload<S> = FastifyRequest<{ Body: Static<S["body"]>, Headers: Static<S["headers"]>, Params: Static<S["params"]>, Reply: Static<S["response"][200]>, Querystring: Static<S["query"]> }>
 type FastifyReplySchemaPayload<S> = FastifyReply<any, any, any, { Body: Static<S["body"]>, Headers: Static<S["headers"]>, Params: Static<S["params"]>, Reply: Static<S["response"][200]>, Querystring: Static<S["query"]> }>
@@ -29,17 +29,17 @@ type UnknownController = {
 }
 
 type BaseController<S extends BaseSchema, D extends TSchema> = {
-    data?: D;
+    locals?: D;
     schema?: S;
-    preHandler?: ((req: FastifyRequestSchemaPayload<S> & { data: Static<D> }, resp: FastifyReplySchemaPayload<S>, next: () => void) => void)[] 
-    handler: (req: FastifyRequestSchemaPayload<S> & { data: Static<D> }, rep: FastifyReplySchemaPayload<S> ) => Promise<Static<S["response"][200]>>;
+    preHandler?: ((req: FastifyRequestSchemaPayload<S> & { locals: Static<D> }, resp: FastifyReplySchemaPayload<S>, next: () => void) => void)[] 
+    handler: (req: FastifyRequestSchemaPayload<S> & { locals: Static<D> }, rep: FastifyReplySchemaPayload<S> ) => Promise<Static<S["response"][200]>>;
 }
 
 type PredefinedController<S extends BaseSchema, S0 extends BaseSchema, D extends TSchema, D0 extends TSchema> = {
-    data?: D;
+    locals?: D;
     schema?: S;
     preHandler?: ((req: FastifyRequestSchemaPayload<S>, resp: FastifyReplySchemaPayload<S>, next: () => void) => void)[] 
-    handler: (req: FastifyRequestSchemaPayload<S & S0> & { data: Static<D> & Static<D0> }, rep: FastifyReplySchemaPayload<S & S0> ) => Promise<Static<S["response"][200]>>;
+    handler: (req: FastifyRequestSchemaPayload<S & S0> & { locals: Static<D> & Static<D0> }, rep: FastifyReplySchemaPayload<S & S0> ) => Promise<Static<S["response"][200]>>;
 }
 
 
@@ -63,3 +63,5 @@ type Methods = 'delete' | 'get' | 'head' | 'patch' | 'post' | 'put' | 'options' 
     'propfind' | 'proppatch' | 'mkcol' | 'copy' | 'move' | 'lock' | 'unlock' | 'trace' | 'search'
 
 export function defineRouter(app :FastifyInstance): { [K in Methods]: <U extends string>(url: U, controller: UnknownController) => FastifyInstance }
+
+export function initRouter(app :FastifyInstance): void

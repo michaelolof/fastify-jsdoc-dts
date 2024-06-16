@@ -6,33 +6,38 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import autolad from "@fastify/autoload";
 import { fileURLToPath } from "url";
 import path from "path";
+import { initRouter } from "./vendor/fastify_helpers/index.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-const port = Number(process.env.PORT) || 5100
-const server = Fastify()
+const port = Number(process.env.PORT) || 5200
+const server = Fastify().withTypeProvider()
 
 server.register(cors, {})
-server.register(autolad, {
-    dir: `${__dirname}/routes`
-})
 server.register(fastifySwagger, {
     openapi: {
-        openapi: "3.0.3",
+        openapi: "3.1.0",
         info: {
             title: "Flowborg API",
             description: "Flowborg User API Documentation",
             version: "1.0.0"
         },
         servers: [
-            { url: `http://localhost:${port}/api`, description: "Local development server" }
+            { url: `http://localhost:${port}`, description: "Local development server" }
         ]
     }
 })
+
 server.register(fastifySwaggerUi, {
     routePrefix: "/api-docs"
+})
+
+initRouter(server)
+
+server.register(autolad, {
+    dir: `${__dirname}/routes`
 })
 
 const startServer = async () => {
@@ -41,7 +46,7 @@ const startServer = async () => {
             status: "okay"
         })
     })
-
+    
     await server.ready()
     await setupDBConnection();
     await server.listen({ host: "0.0.0.0", port })

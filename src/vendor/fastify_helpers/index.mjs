@@ -31,7 +31,7 @@ export const useControllerDefinition = (definition) => (options) =>  {
         body: merge(definition.schema?.body, options.schema?.body),
         params: merge(definition.schema?.params, options.schema?.params),
         response: { ...definition.schema?.response || {}, ...options.schema?.response },
-        data: merge(definition.data, options.data),
+        locals: merge(definition.locals, options.locals),
     })
 
     const preHandlers = [...definition.preHandler || [], ...options.preHandler || []]
@@ -48,6 +48,9 @@ export function defineController(options) {
     return options
 }
 
+/**
+ * @param {import("fastify").FastifyInstance} app 
+ */
 export function defineRouter(app) {
 
     const methods = /** @type {const}*/ ([
@@ -64,4 +67,15 @@ export function defineRouter(app) {
     }
 
     return rtn;
+}
+
+/**
+ * @param {import("fastify").FastifyInstance} app 
+ */
+export function initRouter(app) {
+    app.decorateRequest("locals", null)
+    app.addHook("onRequest", (req, res, next) => {
+        req.locals = {}
+        next()
+    })
 }

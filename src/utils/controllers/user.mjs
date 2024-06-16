@@ -4,7 +4,7 @@ import { UserSchema } from "../models/users.mjs";
 
 export const defineUserController = useControllerDefinition({
 
-    data: Type.Object({
+    locals: Type.Object({
         user: UserSchema
     }),
 
@@ -27,7 +27,7 @@ export const defineUserController = useControllerDefinition({
         }
 
         // Pass user to the data field on the request object
-        req.data = { user }
+        req.locals.user = user
         
         // Call next middleware
         next();
