@@ -1,6 +1,7 @@
 import { Type } from "@sinclair/typebox";
 import { defineServiceController } from "../../utils/controllers/admin.mjs";
 import { defineSchema } from "../../vendor/fastify_helpers/index.mjs";
+import { errors } from "../../utils/errors.mjs";
 
 export const getServiceDetails = defineServiceController({
 
@@ -16,16 +17,15 @@ export const getServiceDetails = defineServiceController({
                     description: Type.Optional(Type.String()),
                 })
             }),
-
-            default: Type.Object({
-                status: Type.Literal("success"),
-                message: Type.String(),
-                data: Type.Null()
-            }),
         }
     }),
 
     handler: async(req, res) => {
+
+        // Demo how to handle errors
+        if (!req.locals.service) {
+            throw new errors.BadRequestError("The defined service is not supported")
+        }
 
         const details = {
             "accounts": {

@@ -109,6 +109,8 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "exclude": [
+    ".vscode",
+    "node_modules/**/*",
     "./src/vendor/**/*"
   ]
 }

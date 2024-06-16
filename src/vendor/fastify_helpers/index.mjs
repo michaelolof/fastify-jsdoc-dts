@@ -77,7 +77,7 @@ export function initRouter(app) {
         return this.code(code).send(res)
     })
     app.decorateRequest("locals", null)
-    app.addHook("onRequest", (req, res, next) => {
+    app.addHook("preHandler", (req, res, next) => {
         req.locals = {}
         next()
     })
