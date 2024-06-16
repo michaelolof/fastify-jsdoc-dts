@@ -6,7 +6,7 @@ export const getServiceDetails = defineServiceController({
 
     schema: defineSchema({
         response: {
-            200: Type.Object({
+            "2XX": Type.Object({
                 status: Type.Literal("success"),
                 message: Type.String(),
                 data: Type.Object({
@@ -15,11 +15,18 @@ export const getServiceDetails = defineServiceController({
                     quantity: Type.Number(),
                     description: Type.Optional(Type.String()),
                 })
-            })
+            }),
+
+            default: Type.Object({
+                status: Type.Literal("success"),
+                message: Type.String(),
+                data: Type.Null()
+            }),
         }
     }),
 
     handler: async(req, res) => {
+
         const details = {
             "accounts": {
                 id: "x1o9111j1222",
@@ -34,7 +41,7 @@ export const getServiceDetails = defineServiceController({
             },
         }
 
-        return res.send({
+        return res.sendCode(200, {
             status: "success",
             message: "Service details sent successfully",
             data: details[req.locals.service]

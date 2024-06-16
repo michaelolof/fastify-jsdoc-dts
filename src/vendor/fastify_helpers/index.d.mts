@@ -19,8 +19,56 @@ export type DefinedSchema<Q, B, P, H> = {
 
 export function defineSchema<S extends BaseSchema>(schema :S) : S;
 
+type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N
+  ? Acc[number]
+  : Enumerate<N, [...Acc, Acc['length']]>
+
+type IntRange<F extends number, T extends number> = Exclude<Enumerate<T>, Enumerate<F>>
+
+type InformationalStatuses = IntRange<100, 200>
+type SuccessStatuses = IntRange<200, 300>
+type RedirectionStatuses = IntRange<300, 400>
+type ClientErrorStatuses = IntRange<400, 500>
+type ServerErrorStatuses = IntRange<500, 600>
+
+type InferDefaultResponse<U> = U extends Record<"default", TSchema> ? Static<U["default"]> : never
+
+type InferResponseByCode<C, T> = T extends BaseSchema
+    ? T["response"] extends (infer U) | undefined
+        ?  U extends Record<C, TSchema>
+            ? Static<U[C]>
+            : U extends Record<(infer N), TSchema>
+                ? C extends InformationalStatuses
+                    ? U extends Record<"1XX", TSchema>
+                        ? Static<U["1XX"]>
+                        : InferDefaultResponse<U>
+                    : C extends SuccessStatuses
+                        ? U extends Record<"2XX", TSchema>
+                            ? Static<U["2XX"]>
+                            : InferDefaultResponse<U>
+                        : C extends RedirectionStatuses
+                            ? U extends Record<"3XX", TSchema>
+                                ? Static<U["3XX"]>
+                                : InferDefaultResponse<U>
+                            : C extends ClientErrorStatuses
+                                ? U extends Record<"4XX", TSchema>
+                                    ? Static<U["4XX"]>
+                                    : InferDefaultResponse<U>
+                                : C extends ServerErrorStatuses
+                                    ? U extends Record<"5XX", TSchema>
+                                        ? Static<U["5XX"]>
+                                        : InferDefaultResponse<U>
+                                    : never
+                : never
+        : never
+    : never
+
+type ReplyUtils<S> = {
+    sendCode<C extends number>(code :C, payload: InferResponseByCode<C, S>): any
+}
+
 type FastifyRequestSchemaPayload<S> = FastifyRequest<{ Body: Static<S["body"]>, Headers: Static<S["headers"]>, Params: Static<S["params"]>, Reply: Static<S["response"][200]>, Querystring: Static<S["query"]> }>
-type FastifyReplySchemaPayload<S> = FastifyReply<any, any, any, { Body: Static<S["body"]>, Headers: Static<S["headers"]>, Params: Static<S["params"]>, Reply: Static<S["response"][200]>, Querystring: Static<S["query"]> }>
+type FastifyReplySchemaPayload<S> = FastifyReply<any, any, any, { Body: Static<S["body"]>, Headers: Static<S["headers"]>, Params: Static<S["params"]>, Reply: Static<S["response"][200]>, Querystring: Static<S["query"]> }> & ReplyUtils<S>
 
 type UnknownController = {
     schema?: any;

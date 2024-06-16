@@ -73,6 +73,9 @@ export function defineRouter(app) {
  * @param {import("fastify").FastifyInstance} app 
  */
 export function initRouter(app) {
+    app.decorateReply("sendCode", function(code, res) {
+        return this.code(code).send(res)
+    })
     app.decorateRequest("locals", null)
     app.addHook("onRequest", (req, res, next) => {
         req.locals = {}

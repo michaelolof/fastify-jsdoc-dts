@@ -29,7 +29,7 @@ export const getProfileInfoController = defineUserController({
 
         const user = req.locals.user;
 
-        return res.send({
+        return res.sendCode(200, {
             status: "success",
             message: "User successfully gotten",
             data: user

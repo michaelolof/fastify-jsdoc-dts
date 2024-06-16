@@ -23,8 +23,8 @@ export const createUserController = defineController({
     schema: schemas.createUser,
 
     handler: async (req, res) => {
-
-        return res.send({
+        
+        return res.sendCode(200, {
             id: "1",           
             title: "Stuff",
             description: "three"
