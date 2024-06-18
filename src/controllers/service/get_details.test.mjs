@@ -12,7 +12,7 @@ test("GET /service/get_details without headers", async() => {
 
     expect(data).toMatchObject({
         status: "error",
-        code: "SCHEMA_VALIDATION_ERROR",
+        key: "BAD_REQUEST_ERROR",
         data: null,
     }); 
 
