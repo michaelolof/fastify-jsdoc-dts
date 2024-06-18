@@ -1,5 +1,4 @@
-import { setupDBConnection } from "#src/utils/dbutils.mjs";
-import { createApp } from "#src/app.mjs";
+import { setupServer } from "#src/shared/setup/fastify.mjs";
 import closeWithGrace from "close-with-grace";
 import dotenv from "dotenv";
 
@@ -8,7 +7,7 @@ dotenv.config();
 const port = Number(process.env.PORT) || 5200;
 const host = process.env.HOST || "0.0.0.0";
 
-const app = createApp(port, {
+const app = setupServer(port, {
     logger: process.stdout.isTTY ? { transport: { target: "pino-pretty" } } : true,
 });
 
@@ -20,7 +19,6 @@ const startServer = async() => {
     });
     
     await app.ready();
-    await setupDBConnection();
     await app.listen({ host, port });
 };
 

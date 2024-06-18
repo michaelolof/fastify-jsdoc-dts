@@ -1,9 +1,9 @@
 import { Type } from "@sinclair/typebox";
 import { defineSchema, useControllerDefinition } from "#src/vendor/fastify_helpers/index.mjs";
-import { UserSchema } from "#src/utils/models/users.mjs";
-import { AppError } from "#src/utils/errors/types.mjs";
-import { errs } from "#src/utils/errors/keys.mjs";
-import { throwFn } from "#src/utils/errors/utils.mjs";
+import { UserSchema } from "#src/shared/models/users.mjs";
+import { AppError } from "#src/shared/errors/types.mjs";
+import { errs } from "#src/shared/errors/keys.mjs";
+import { throwFn } from "#src/shared/errors/utils.mjs";
 
 export const defineUserController = useControllerDefinition({
 

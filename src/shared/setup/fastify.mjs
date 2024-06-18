@@ -5,12 +5,14 @@ import cors from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import autolad from "@fastify/autoload";
-import { parseAppError } from "#src/utils/errors/utils.mjs";
+import { parseAppError } from "#src/shared/errors/utils.mjs";
 import { initRouter } from "#src/vendor/fastify_helpers/index.mjs";
-import { errs } from "#src/utils/errors/keys.mjs";
+import { errs } from "#src/shared/errors/keys.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const __srcdir = path.resolve(__dirname, "../../");
+
 
 /**
  * @template {import("fastify").FastifyServerOptions} T
@@ -18,7 +20,7 @@ const __dirname = path.dirname(__filename);
  * @param {T} [opts]
  * @returns {import("fastify").FastifyInstance}
  */
-export function createApp(port, opts) {
+export function setupServer(port, opts) {
     const app = Fastify(opts).withTypeProvider();
 
     initRouter(app);
@@ -44,7 +46,7 @@ export function createApp(port, opts) {
     });
 
     app.register(autolad, {
-        dir: `${__dirname}/routes`,
+        dir: `${__srcdir}/routes`,
     });
 
     app.setErrorHandler((err, req, res) => {

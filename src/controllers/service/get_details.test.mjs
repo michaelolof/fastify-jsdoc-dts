@@ -1,9 +1,9 @@
 import { describe, it, before, after } from "node:test";
 import assert from "node:assert";
-import { createApp } from "#src/app.mjs";
+import { setupServer } from "#src/shared/setup/fastify.mjs";
 
 const path = "/api/v1/service/get_details";
-const app = createApp(3000);
+const app = setupServer(3000);
 
 describe(`GET ${path}`, async() => {
 
