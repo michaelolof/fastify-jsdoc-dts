@@ -6,4 +6,4 @@ export const UserSchema = Type.Object({
     last_name: Type.String(),
     username: Type.String(),
     iat: Type.String(),
-})
+});

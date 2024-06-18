@@ -1,26 +1,24 @@
 {
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "never"
+    "eslint.enable": true,
+    "eslint.format.enable": true,
+    "eslint.useFlatConfig": true,
+    "eslint.options": {
+        "overrideConfigFile": "./eslint.config.mjs"
     },
     "eslint.validate": [
         "javascript",
         "typescript",
-        "html",
-        "vue",
     ],
-    "eslint.format.enable": true,
     "eslint.probe": [
         "javascript",
-        "javascriptreact",
         "typescript",
-        "typescriptreact",
-        "html",
-        "vue",
-        "markdown",
-        "scss",
     ],
     "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
     "files.exclude": {
         ".nuxt": true
-    }
+    },
 }

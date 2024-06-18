@@ -5,7 +5,7 @@ const schemas = {
     createUser: defineSchema({
         body: Type.Object({
             title: Type.String(),
-            description: Type.String()
+            description: Type.String(),
         }),
 
         response: {
@@ -13,22 +13,22 @@ const schemas = {
                 id: Type.String(),
                 title: Type.String(),
                 description: Type.String(),
-            })
+            }),
         },
-    })
-}
+    }),
+};
 
 export const createUserController = defineController({
 
     schema: schemas.createUser,
 
-    handler: async (req, res) => {
+    handler: async(req, res) => {
         
         return res.sendCode(200, {
             id: "1",           
             title: "Stuff",
-            description: "three"
-        })
-    }
+            description: "three",
+        });
+    },
 
-})
+});

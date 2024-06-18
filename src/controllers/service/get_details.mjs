@@ -1,7 +1,8 @@
 import { Type } from "@sinclair/typebox";
 import { defineServiceController } from "../../utils/controllers/admin.mjs";
 import { defineSchema } from "../../vendor/fastify_helpers/index.mjs";
-import { errors } from "../../utils/errors.mjs";
+import { AppError } from "../../utils/errors/types.mjs";
+import { errs } from "../../utils/errors/keys.mjs";
 
 export const getServiceDetails = defineServiceController({
 
@@ -15,36 +16,36 @@ export const getServiceDetails = defineServiceController({
                     name: Type.String(),
                     quantity: Type.Number(),
                     description: Type.Optional(Type.String()),
-                })
+                }),
             }),
-        }
+        },
     }),
 
     handler: async(req, res) => {
 
         // Demo how to handle errors
         if (!req.locals.service) {
-            throw new errors.BadRequestError("The defined service is not supported")
+            throw new AppError(errs.BadRequest, "The defined service is not supported");
         }
 
         const details = {
-            "accounts": {
+            accounts: {
                 id: "x1o9111j1222",
                 name: "Personal account",
                 quantity: 24,
                 description: "Conditional statements are awesome",
             },
-            "payments": {
+            payments: {
                 id: "dqee1jik122",
                 name: "Invoice Payments",
                 quantity: 13,
             },
-        }
+        };
 
         return res.sendCode(200, {
             status: "success",
             message: "Service details sent successfully",
-            data: details[req.locals.service]
-        })
+            data: details[req.locals.service],
+        });
     },
-})
+});

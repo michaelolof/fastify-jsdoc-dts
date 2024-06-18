@@ -1,20 +1,20 @@
-import { createApp } from "../../app.mjs"
+import { createApp } from "../../app.mjs";
 
-test("GET /service/get_details without headers", async () => {
-    const app = createApp(3000)
-    await app.ready()
+test("GET /service/get_details without headers", async() => {
+    const app = createApp(3000);
+    await app.ready();
 
     const res = await app.inject({
         method: "GET",
-        url: "/service/get_details"
-    })
-    const data = res.json()
+        url: "/service/get_details",
+    });
+    const data = res.json();
 
     expect(data).toMatchObject({
-        status: 'error',
-        code: 'SCHEMA_VALIDATION_ERROR',
-        data: null
-    }) 
+        status: "error",
+        code: "SCHEMA_VALIDATION_ERROR",
+        data: null,
+    }); 
 
-    await app.close() 
-})
+    await app.close(); 
+});

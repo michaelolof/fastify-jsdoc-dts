@@ -7,14 +7,13 @@ export const useControllerDefinition = (definition) => (options) =>  {
     const merge = (one, two) => {
         if (!one && !two) {
             return undefined;
-        }
-        else if (one && !two) {
+        } else if (one && !two) {
             return one;
         } else if (two && !one) {
             return two;
         }
-        return Type.Composite([one, two])
-    }
+        return Type.Composite([one, two]);
+    };
 
     const trimFields = (obj) => {
         for(const key in obj) {
@@ -22,8 +21,8 @@ export const useControllerDefinition = (definition) => (options) =>  {
                 delete obj[key];
             }
         }
-        return obj
-    }
+        return obj;
+    };
 
     const schema = trimFields({
         query: merge(definition.schema?.query, options.schema?.query),
@@ -32,20 +31,20 @@ export const useControllerDefinition = (definition) => (options) =>  {
         params: merge(definition.schema?.params, options.schema?.params),
         response: { ...definition.schema?.response || {}, ...options.schema?.response },
         locals: merge(definition.locals, options.locals),
-    })
+    });
 
-    const preHandlers = [...definition.preHandler || [], ...options.preHandler || []]
+    const preHandlers = [...definition.preHandler || [], ...options.preHandler || []];
 
     return {
         schema,
         preHandler: preHandlers.length > 0 ? preHandlers : undefined,
-        handler: options.handler
-    }
+        handler: options.handler,
+    };
     
-}
+};
     
 export function defineController(options) {
-    return options
+    return options;
 }
 
 /**
@@ -54,16 +53,16 @@ export function defineController(options) {
 export function defineRouter(app) {
 
     const methods = /** @type {const}*/ ([
-        'delete', 'get', 'head', 'patch', 'post', 'put', 'options',
-        'propfind', 'proppatch', 'mkcol', 'copy', 'move', 'lock', 'unlock', 'trace', 'search'
-    ])
+        "delete", "get", "head", "patch", "post", "put", "options",
+        "propfind", "proppatch", "mkcol", "copy", "move", "lock", "unlock", "trace", "search",
+    ]);
 
-    const rtn = {}
+    const rtn = {};
 
     for(const m of methods) {
         rtn[m] = (url, controller) => {
-            return app.route({ url, method: m, handler: controller.handler, schema: controller.schema, preHandler: controller.preHandler })
-        }
+            return app.route({ url, method: m, handler: controller.handler, schema: controller.schema, preHandler: controller.preHandler });
+        };
     }
 
     return rtn;
@@ -74,11 +73,11 @@ export function defineRouter(app) {
  */
 export function initRouter(app) {
     app.decorateReply("sendCode", function(code, res) {
-        return this.code(code).send(res)
-    })
-    app.decorateRequest("locals", null)
+        return this.code(code).send(res);
+    });
+    app.decorateRequest("locals", null);
     app.addHook("preHandler", (req, res, next) => {
-        req.locals = {}
-        next()
-    })
+        req.locals = {};
+        next();
+    });
 }

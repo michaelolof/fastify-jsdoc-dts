@@ -1,5 +1,5 @@
-import  { type TObject, type Static, type TSchema, Type } from "@sinclair/typebox"
-import type  { FastifyRequest, FastifyReply, RawServerDefault, RawRequestDefaultExpression, RawReplyDefaultExpression, FastifyInstance, FastifySchema, RouteGenericInterface, ContextConfigDefault  } from "fastify";
+import  type { TObject, Static, TSchema } from "@sinclair/typebox"
+import type  { FastifyRequest, FastifyReply, FastifyInstance  } from "fastify";
 
 export type BaseSchema = {
     query?: TObject<any>;
@@ -43,7 +43,7 @@ type InferResponseByCode<C, T> = T extends BaseSchema
     ? T["response"] extends (infer U) | undefined
         ?  U extends Record<C, TSchema>
             ? Static<U[C]>
-            : U extends Record<(infer N), TSchema>
+            : U extends Record<number | string, TSchema>
                 ? C extends InformationalStatuses
                     ? U extends Record<"1XX", TSchema>
                         ? Static<U["1XX"]>
@@ -101,14 +101,14 @@ export function useControllerDefinition<S extends BaseSchema, D extends TSchema>
 
 type OldControllerOptions<S> = { 
     schema? :S,
-    preHandler?: ((req: FastifyRequestSchemaPayload<S>, resp: FastifyReplySchemaPayload<S>, next: Function) => void)[] 
+    preHandler?: ((req: FastifyRequestSchemaPayload<S>, resp: FastifyReplySchemaPayload<S>, next: () => void) => void)[] 
     handler: (req: FastifyRequestSchemaPayload<S>, rep: FastifyReplySchemaPayload<S> ) => Promise<Static<S["response"][200]>>
 }
 
 type ControllerOptions<S> = {
     schema?: S
     handler: (req: FastifyRequestSchemaPayload<S>, res: FastifyReplySchemaPayload<S>) => Promise<Static<S["response"][200]>>
-    preHandler? :((req: FastifyRequestSchemaPayload<S>, res: FastifyReplySchemaPayload<S>, next: Function) => void)[]
+    preHandler? :((req: FastifyRequestSchemaPayload<S>, res: FastifyReplySchemaPayload<S>, next:  () => void) => void)[]
 }
 
 export function defineController<S>(options: ControllerOptions<S>) :ControllerOptions<S>

@@ -1,12 +1,13 @@
 import path from "path";
 import { fileURLToPath } from "url";
 import Fastify from "fastify";
-import cors from "@fastify/cors"
+import cors from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import autolad from "@fastify/autoload";
 import { initRouter } from "./vendor/fastify_helpers/index.mjs";
-import { errorCodesMap } from "./utils/errors.mjs";
+import { parseAppError } from "./utils/errors/utils.mjs";
+import { errs } from "./utils/errors/keys.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -47,24 +48,27 @@ export function createApp(port, opts) {
     });
 
     app.setErrorHandler((err, req, res) => {
-        return res.code(err.statusCode || 500)
-        .send({
-            status: "error",
-            message: err.message,
-            code: errorCodesMap[err.code] || err.code,
-            data: null
-        })
-    })
+        const aerr = parseAppError(err);  
+        return res.code(aerr.statusCode)
+            .send(/** @type {import("@dts/errors.js").ErrorResponse}*/ ({
+                status: "error",
+                key: aerr.key,
+                ts: aerr.ts,
+                message: aerr.message,
+                data: aerr.data || null,
+            }));            
+
+    });
 
     app.setNotFoundHandler((req, res) => {
         return res.code(404)
-        .send({
-            status: "error",
-            message: "Resource not found",
-            code: "NOT_FOUND_ERROR",
-            data: null,
-        })
-    })
+            .send(/** @type {import("@dts/errors.js").ErrorResponse}*/({
+                status: "error",
+                key: errs.NotFound.key,
+                message: "Resource not found",
+                data: null,
+            }));
+    });
 
-    return app
+    return app;
 }
