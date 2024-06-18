@@ -1,5 +1,5 @@
-import { setupDBConnection } from "./utils/dbutils.mjs";
-import { createApp } from "./app.mjs";
+import { setupDBConnection } from "#src/utils/dbutils.mjs";
+import { createApp } from "#src/app.mjs";
 import closeWithGrace from "close-with-grace";
 import dotenv from "dotenv";
 

@@ -113,7 +113,7 @@ export const errs = /** @type {const}*/ ({
 });
 
 
-export const fastifyErrorMappings = /** @type {Record<String, import("@dts/errors.js").ErrorKind>}*/ ({
+export const fastifyErrorMappings = /** @type {Record<String, import("#dts/errors.js").ErrorKind>}*/ ({
     FST_ERR_NOT_FOUND: errs.NotFound,
     FST_ERR_OPTIONS_NOT_OBJ: errs.InternalServer,
     FST_ERR_QSP_NOT_FN: errs.InternalServer,

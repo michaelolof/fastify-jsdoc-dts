@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import { defineController, defineSchema } from "../../vendor/fastify_helpers/index.mjs";
+import { defineController, defineSchema } from "#src/vendor/fastify_helpers/index.mjs";
 
 const schemas = {
     createUser: defineSchema({

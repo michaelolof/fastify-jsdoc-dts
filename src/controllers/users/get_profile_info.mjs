@@ -1,7 +1,7 @@
 import { Type } from "@sinclair/typebox";
-import { defineUserController } from "../../utils/controllers/user.mjs";
-import { defineSchema } from "../../vendor/fastify_helpers/index.mjs";
-import { UserSchema } from "../../utils/models/users.mjs";
+import { defineUserController } from "#src/utils/controllers/user.mjs";
+import { defineSchema } from "#src/vendor/fastify_helpers/index.mjs";
+import { UserSchema } from "#src/utils/models/users.mjs";
 
 export const getProfileInfoController = defineUserController({
 

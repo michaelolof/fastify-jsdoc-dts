@@ -19,7 +19,7 @@ export function tryFn(fn) {
  * @param {() => T | AppError} fn
  * @returns {T}
  */
-export function throws(fn) {
+export function throwFn(fn) {
     try {
         const v = fn();
         if (v instanceof AppError) {
@@ -91,7 +91,7 @@ export function parseAppError(val) {
 
 /**
  * @param {any} val 
- * @returns {import("@dts/errors.js").ErrorResponse}
+ * @returns {import("#dts/errors.js").ErrorResponse}
  */
 export function errorResponse(val) {
     const err = parseAppError(val);

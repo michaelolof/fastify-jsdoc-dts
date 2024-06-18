@@ -1,8 +1,8 @@
 import { Type } from "@sinclair/typebox";
-import { defineServiceController } from "../../utils/controllers/admin.mjs";
-import { defineSchema } from "../../vendor/fastify_helpers/index.mjs";
-import { AppError } from "../../utils/errors/types.mjs";
-import { errs } from "../../utils/errors/keys.mjs";
+import { defineServiceController } from "#src/utils/controllers/admin.mjs";
+import { defineSchema } from "#src/vendor/fastify_helpers/index.mjs";
+import { AppError } from "#src/utils/errors/types.mjs";
+import { errs } from "#src/utils/errors/keys.mjs";
 
 export const getServiceDetails = defineServiceController({
 

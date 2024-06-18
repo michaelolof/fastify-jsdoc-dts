@@ -8,7 +8,7 @@ export class AppError extends Error {
     key = "";
 
     /**
-     * @param {import("@dts/errors.js").ErrorKind} kind
+     * @param {import("#dts/errors.js").ErrorKind} kind
      * @param {string} [message]
      * @param {number} [code]
      */
@@ -65,7 +65,7 @@ export class AppError extends Error {
 
     /**
      * Returns a serializable representation of the AppError
-     * @returns {import("@dts/errors.js").ErrorExport}
+     * @returns {import("#dts/errors.js").ErrorExport}
      */
     toJSON() {
         return {

@@ -5,9 +5,9 @@ import cors from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import autolad from "@fastify/autoload";
-import { initRouter } from "./vendor/fastify_helpers/index.mjs";
-import { parseAppError } from "./utils/errors/utils.mjs";
-import { errs } from "./utils/errors/keys.mjs";
+import { parseAppError } from "#src/utils/errors/utils.mjs";
+import { initRouter } from "#src/vendor/fastify_helpers/index.mjs";
+import { errs } from "#src/utils/errors/keys.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -50,7 +50,7 @@ export function createApp(port, opts) {
     app.setErrorHandler((err, req, res) => {
         const aerr = parseAppError(err);  
         return res.code(aerr.statusCode)
-            .send(/** @type {import("@dts/errors.js").ErrorResponse}*/ ({
+            .send(/** @type {import("#dts/errors.js").ErrorResponse}*/ ({
                 status: "error",
                 key: aerr.key,
                 ts: aerr.ts,
@@ -62,7 +62,7 @@ export function createApp(port, opts) {
 
     app.setNotFoundHandler((req, res) => {
         return res.code(404)
-            .send(/** @type {import("@dts/errors.js").ErrorResponse}*/({
+            .send(/** @type {import("#dts/errors.js").ErrorResponse}*/({
                 status: "error",
                 key: errs.NotFound.key,
                 message: "Resource not found",

@@ -1,20 +1,37 @@
-import { createApp } from "../../app.mjs";
+import { describe, it, before, after } from "node:test";
+import assert from "node:assert";
+import { createApp } from "#src/app.mjs";
 
-test("GET /service/get_details without headers", async() => {
-    const app = createApp(3000);
-    await app.ready();
+const path = "/api/v1/service/get_details";
+const app = createApp(3000);
 
-    const res = await app.inject({
-        method: "GET",
-        url: "/service/get_details",
+describe(`GET ${path}`, async() => {
+
+    before(async() => {
+        await app.ready();
     });
-    const data = res.json();
+    
+    it("should fail without request headers", async() => {
+        const res = await app.inject({
+            method: "GET",
+            url: "/api/v1/service/get_details",
+        });
+    
+        const actual = res.json();
+        const expected = {
+            status: "error",
+            key: "BAD_REQUEST_ERROR",
+            data: null,        
+        };
+    
+        assert.equal(actual.status, expected.status);
+        assert.equal(actual.key, expected.key);
+        assert.equal(actual.data, expected.data);
+        assert.match(actual.message, /headers must have required property/);        
+    });
 
-    expect(data).toMatchObject({
-        status: "error",
-        key: "BAD_REQUEST_ERROR",
-        data: null,
-    }); 
-
-    await app.close(); 
+    after(async() => {
+        await app.close(); 
+    });
+    
 });

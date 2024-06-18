@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import { defineSchema, useControllerDefinition } from "../../vendor/fastify_helpers/index.mjs";
+import { defineSchema, useControllerDefinition } from "#src/vendor/fastify_helpers/index.mjs";
 
 export const defineServiceController = useControllerDefinition({
 
